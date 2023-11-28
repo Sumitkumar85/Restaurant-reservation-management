@@ -1,0 +1,96 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Reservation System</title>
+</head>
+<body>
+    <style>/* style.css */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            background-image: url("../project/862730.jpg");
+            margin: 0;
+            padding: 0;
+          }
+          
+          .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+          
+          form {
+            display: grid;
+            gap: 10px;
+          }
+          
+          button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+          
+          #tableStatus {
+            margin-top: 20px;
+          }
+          </style>
+  <div class="container">
+    <h1>Restaurant Reservation System</h1>
+    <form id="reservationForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+      
+      <label for="date">Date:</label>
+      <input type="date" id="date" required>
+      
+      <label for="time">Time:</label>
+      <input type="time" id="time" required>
+      
+      <label for="partySize">Party Size:</label>
+      <input type="number" id="partySize" required>
+      
+      <button type="submit">Reserve Table</button>
+    </form>
+    
+    <div id="tableStatus"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+<script>
+    // script.js
+async function reserveTable() {
+  const name = document.getElementById('name').value;
+  const date = document.getElementById('date').value;
+  const time = document.getElementById('time').value;
+  const partySize = document.getElementById('partySize').value;
+
+  const reservation = { name, date, time, partySize };
+
+  try {
+    const response = await fetch('/reserve', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reservation),
+    });
+
+    const data = await response.json();
+    document.getElementById('tableStatus').innerText = data.message;
+  } catch (error) {
+    console.error('Error:', error);
+    document.getElementById('tableStatus').innerText = 'Error occurred during reservation.';
+  }
+}
+
+</script>
